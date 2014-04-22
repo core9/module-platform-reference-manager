@@ -1,0 +1,58 @@
+<h1 class="page-header">Content references<small><i class="icon-double-angle-right"></i> manage your relations</small></h1>
+<fieldset>
+  <legend>Options</legend>
+  <div class="row">
+  	<div class="col-md-6">
+      <div class="form-group row">
+        <label class="col-md-2 control-label" for="">Source</label>
+        <div class="col-md-10">
+          <button type="button" class="form-control btn btn-default dropdown-toggle">{{source.name}}</button>
+          <ul class="dropdown-menu selectbox">
+            <li ng-repeat="contenttype in contenttypes"><a ng-click="$parent.source = contenttype">{{contenttype.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group row" ng-show="source !== undefined">
+        <label class="col-md-2 control-label" for="">Field</label>
+        <div class="col-md-10">
+          <button type="button" class="form-control btn btn-default dropdown-toggle">{{sourceField.name}}</button>
+          <ul class="dropdown-menu selectbox">
+            <li ng-repeat="field in contentRefFields"><a ng-click="$parent.sourceField = {name: field.name, field: field.field}">{{field.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="sourceField !== undefined">
+    <div class="col-md-6">
+      <div class="form-group">
+        <div class="input-group row">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control" placeholder="Search" ng-model="srcSearch.title">
+          <span class="input-group-addon" ng-click="unreferenced = !unreferenced"><i class="fa" ng-class="{'fa-chain-broken': unreferenced, 'fa-link': !unreferenced}" title="Show unreferenced only"></i></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="list-group row">
+          <a ng-repeat="content in contentList | filter:srcSearch" class="list-group-item" ng-class="{active: $parent.srcIndex[content._id] === true}" ng-click="selectSource(content)">{{content.title}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control" placeholder="Search" ng-model="dstSearch[sourceField.field.contentfield]">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="list-group">
+          <a ng-repeat="reference in referencedList | filter:dstSearch" class="list-group-item" ng-class="{active: $parent.destIndex[reference._id] === true}" ng-click="selectDestination(reference)">{{reference[sourceField.field.contentfield]}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</fieldset>
